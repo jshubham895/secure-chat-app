@@ -32,7 +32,7 @@ const ChatScreen = ({ navigation, route }) => {
 						rounded
 						source={{
 							uri:
-								messages.at(-1)?.data.photoURL ||
+								messages[0]?.data.photoURL ||
 								"https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_640.png"
 						}}
 					/>
@@ -87,7 +87,7 @@ const ChatScreen = ({ navigation, route }) => {
 			.collection("chats")
 			.doc(route.params.id)
 			.collection("messages")
-			.orderBy("timestamp")
+			.orderBy("timestamp", "desc")
 			.onSnapshot((snapshot) =>
 				setMessages(
 					snapshot.docs.map((doc) => ({
@@ -96,7 +96,6 @@ const ChatScreen = ({ navigation, route }) => {
 					}))
 				)
 			);
-
 		return unsubscribe;
 	}, [route]);
 
@@ -193,7 +192,7 @@ const styles = StyleSheet.create({
 	},
 	sender: {
 		padding: 15,
-		backgroundColor: "#ececec",
+		backgroundColor: "#2C6BED",
 		alignSelf: "flex-start",
 		borderRadius: 20,
 		margin: 15,
