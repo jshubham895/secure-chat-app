@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { KeyboardAvoidingView } from "react-native";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, Input, Image } from "react-native-elements";
@@ -19,7 +19,17 @@ const LoginScreen = ({ navigation }) => {
 		return unsubscribe;
 	}, []);
 
-	const signIn = () => {};
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			headerBackTitle: "Back to Login"
+		});
+	}, [navigation]);
+
+	const signIn = () => {
+		auth
+			.signInWithEmailAndPassword(email, password)
+			.catch((error) => alert(error));
+	};
 
 	return (
 		<KeyboardAvoidingView behaviour="padding" style={styles.container}>
@@ -44,6 +54,7 @@ const LoginScreen = ({ navigation }) => {
 					type="password"
 					value={password}
 					onChangeText={(password) => setPassword(password)}
+					onSubmitEditing={signIn}
 				/>
 			</View>
 			<Button containerStyle={styles.button} onPress={signIn} title="Login" />
